@@ -49,7 +49,7 @@ class Mall:
             print("______________________________________________")
             for product in list_products:
                 print("{:<10}{:<8}{:<8}{:<13}{}".format(product["barcode"], product["name"], product["brand"],
-                                                         product["available"], product["price"]))
+                                                        product["available"], product["price"]))
             print()
         else:
             print()
@@ -61,7 +61,6 @@ class Mall:
         else:
             print("Sorry... We're closed. Come again later.")
 
-
     def is_open(self, visiting_time):
         opening_time_obj = datetime.strptime(self.opening_time, '%H:%M')
         closing_time_obj = datetime.strptime(self.closing_time, '%H:%M')
@@ -71,6 +70,3 @@ class Mall:
 
     def __str__(self):
         return f"{self.name.title()} Shopping Mall - Opening hours: {self.opening_time} am - {self.closing_time} pm"
-
-
-

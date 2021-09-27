@@ -1,6 +1,5 @@
 import os
 import csv
-import pickle
 
 
 class FileHandler:
@@ -45,22 +44,3 @@ class FileHandler:
             final_rows.append(row)
         self.add_to_file(final_rows, mode="w")
 
-    # def read_file(self):
-    #     list_objects = []
-    #     if os.path.exists(self.file_path):
-    #         with open(self.file_path, 'rb') as file:
-    #             obj = pickle.load(file)
-    #             list_objects.append(obj)
-    #     return list_objects
-    #
-    # def find_obj(self, unique_param, checking_param):
-    #     all_objects = self.read_file()
-    #     for obj in all_objects:
-    #         if obj.__dict__[unique_param] == checking_param:
-    #             return obj
-    #
-    #
-    # def add_to_file(self, obj):
-    #     # fields = obj.keys()
-    #     with open(self.file_path, 'wb') as file:
-    #         pickle.dump(obj, file)

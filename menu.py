@@ -1,9 +1,13 @@
 import sys
 from sign_up import SignUp
 from login import Login
+import logging
 
 
 class Menu:
+    logging.basicConfig(filename='app.log', level=logging.INFO,
+                        format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
+
     def __init__(self):
         self.choices = {"1": SignUp, "2": Login, "3": self.exit}
 
@@ -18,7 +22,8 @@ class Menu:
             else:
                 print(f"{choice} is not a valid choice. Try again")
 
-    def exit(self):
+    @staticmethod
+    def exit():
         sys.exit(0)
 
     @staticmethod

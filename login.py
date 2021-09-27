@@ -3,6 +3,7 @@ from file_handler import FileHandler
 import hashlib
 from manager import Manager
 from mall import Mall
+import logging
 
 
 class Login:
@@ -18,6 +19,7 @@ class Login:
                 username = self.validate_username(input("Username: "))
                 password = self.validate_password(username, input("Password: "))
                 user = self.find_user(username)
+                logging.info(f"User {user['username']} logged in.")
                 if user["role"] == "manager":
                     mall = self.get_mall(user["username"])
                     Manager(user["username"], password, mall)
@@ -26,8 +28,10 @@ class Login:
                     Customer(user["username"], password, all_receipts)
                 return
             except BreakException as e:
+                logging.info("User canceled to log in")
                 return
             except ValueError as e:
+                logging.error(e)
                 print(e)
 
     def validate_username(self, username):

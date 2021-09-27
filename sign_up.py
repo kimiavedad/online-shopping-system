@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import logging
 from customer import Customer
 from manager import Manager
 from mall import Mall
@@ -16,25 +16,29 @@ class SignUp:
                 print("(Press enter to cancel)")
 
                 role = self.validate_role(input("Role: ").lower())
-                username = self.validate_username(input("Username (phonenumber): "))
+                username = self.validate_username(input("Username (phone-number): "))
                 password = input("Password: ")
                 self.validate_password(input("Repeat password: "), password)
 
                 if role == "manager":
-                    mall_name = input("Mall name: ")
+                    mall_name = self.check_canceling(input("Mall name: "))
                     opening_time = self.validate_time(input("Opening time (%H:%M): "))
                     closing_time = self.validate_time(input("Closing time (%H:%M): "))
                     mall = Mall(username, mall_name, opening_time, closing_time)
+                    logging.info("New mall added.")
+                    logging.info("A new manager registered.")
                     manager = Manager(username, password, mall)
                     self.file_handler.add_to_file(manager.to_dict())
                     return
-                # todo: edit attributes of customer
+                logging.info("A new customer registered.")
                 customer = Customer(username, password)
                 self.file_handler.add_to_file(customer.to_dict())
                 return
-            except BreakException as e:
+            except BreakException:
+                logging.info("User canceled to sign up.")
                 return
             except ValueError as e:
+                logging.error(e)
                 print(e)
 
     def validate_role(self, role):
@@ -67,10 +71,12 @@ class SignUp:
         else:
             return input_time
 
-    def check_canceling(self, value):
+    @staticmethod
+    def check_canceling(value):
         if value == "":
             print("Canceling...")
             raise BreakException()
+        return value
 
 
 class BreakException(Exception):

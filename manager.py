@@ -1,6 +1,6 @@
 import hashlib
 from datetime import datetime
-
+import logging
 from file_handler import FileHandler
 from product import Product
 from receipt import Receipt
@@ -54,7 +54,7 @@ class Manager:
                 else:
                     raise ValueError(f"{choice} is not a valid choice. Try again")
             except ValueError as e:
-                # todo: add logger
+                logging.error(e)
                 print(e)
 
     def add_products(self):
@@ -72,7 +72,7 @@ class Manager:
             # todo: edit this function the way that can get kwargs
             product = Product(barcode, price, brand, name, available, exp_date)
             self.mall.add_product(product)
-        #    todo: add logger for new product
+            logging.info("New product added.")
         print("Products added successfully.")
 
     def remove_product(self):
@@ -80,8 +80,10 @@ class Manager:
         self.mall.remove_product(barcode)
 
     def available_products(self):
+        self.print_warnings()
         available_products = self.mall.get_available_products()
         if available_products:
+            print("***** List of available products *****")
             self.mall.display_products(self.username, available_products)
         else:
             print("No product is added yet.")
@@ -89,7 +91,7 @@ class Manager:
     def print_warnings(self):
         finished_products = self.mall.get_finished_products()
         if finished_products:
-            # todo: add logging
+            logging.warning("ran of put of some products.")
             print("******* ATTENTION ********")
             print("We ran out of these products:")
             self.mall.display_products(self.username, finished_products)
@@ -163,7 +165,7 @@ class Manager:
     @staticmethod
     def validate_date(date_string):
         try:
-            datetime.strptime(date_string, '%Y/%b/%d')
+            datetime.strptime(date_string, '%Y/%m/%d')
             return date_string
         except Exception:
-            raise ValueError(f"{date_string} does not match format %Y/%b/%d")
+            raise ValueError(f"{date_string} does not match format %Y/%m/%d")

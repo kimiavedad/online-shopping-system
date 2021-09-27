@@ -8,7 +8,7 @@ from mall import Mall
 
 class Customer:
     file_handler_users = FileHandler("users.csv")
-    file_handler_products = FileHandler("products.csv")
+    file_handler_products = FileHandler("malls.csv")
     file_handler_receipts = FileHandler("receipt.csv")
     role = "customer"
 

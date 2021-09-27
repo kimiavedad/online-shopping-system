@@ -7,7 +7,7 @@ from mall import Mall
 
 class Login:
     file_handler_users = FileHandler("users.csv")
-    file_handler_malls = FileHandler("products.csv")
+    file_handler_malls = FileHandler("malls.csv")
     file_handler_receipts = FileHandler("receipt.csv")
 
     def __init__(self):

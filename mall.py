@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class Mall:
-    file_handler = FileHandler("products.csv")
+    file_handler = FileHandler("malls.csv")
 
     def __init__(self, manager, name, opening_time, closing_time, all_products=[], blocked_customers=[]):
         self.manager = manager

@@ -23,7 +23,8 @@ class Manager:
     def to_dict(self):
         return {"role": self.role, "username": self.username, "password": self.password}
 
-    def display_manager_menu(self):
+    @staticmethod
+    def display_manager_menu():
         """
         Display a menu for manager role
         """
@@ -53,6 +54,7 @@ class Manager:
                 else:
                     raise ValueError(f"{choice} is not a valid choice. Try again")
             except ValueError as e:
+                # todo: add logger
                 print(e)
 
     def add_products(self):
@@ -70,6 +72,7 @@ class Manager:
             # todo: edit this function the way that can get kwargs
             product = Product(barcode, price, brand, name, available, exp_date)
             self.mall.add_product(product)
+        #    todo: add logger for new product
         print("Products added successfully.")
 
     def remove_product(self):
@@ -86,11 +89,13 @@ class Manager:
     def print_warnings(self):
         finished_products = self.mall.get_finished_products()
         if finished_products:
+            # todo: add logging
             print("******* ATTENTION ********")
             print("We ran out of these products:")
             self.mall.display_products(self.username, finished_products)
 
-    def display_receipts(self, list_receipts):
+    @staticmethod
+    def display_receipts(list_receipts):
         """ print all the receipts in list_receipts """
         for receipt in list_receipts:
             receipt_obj = Receipt(receipt["mall"], receipt["customer"], receipt["date"], receipt["hour"],
@@ -111,32 +116,13 @@ class Manager:
         self.display_receipts(self.list_all_receipts())
 
     def filter_receipts(self):
-        filter_items = {"date": self.filter_by_date, "customer": self.filter_by_customer, "both": self.filter_by_both}
-        choice = input("Filter by (date, customer, both): ").lower()
-        if choice not in filter_items:
-            raise ValueError("You can only filter by date, customer or both.")
-        action = filter_items[choice]
-        filtered = action()
+        filter_parameter = input("Search by date, customer or both (date customer): ").lower()
+        all_receipts = self.list_all_receipts()
+        filtered = [r for r in all_receipts if filter_parameter in f"{r['date']} {r['customer']}"]
         if filtered:
             self.display_receipts(filtered)
         else:
             raise ValueError("Your search did not match any receipts.")
-
-    def filter_by_date(self):
-        date = self.validate_date(input("date: "))
-        all_receipts = self.list_all_receipts()
-        return list(filter(lambda r: r["date"] == date, all_receipts))
-
-    def filter_by_customer(self):
-        customer = self.get_customer(input("customer's username: "))
-        all_receipts = self.list_all_receipts()
-        return list(filter(lambda r: r["customer"] == customer["username"], all_receipts))
-
-    def filter_by_both(self):
-        date = self.validate_date(input("date: "))
-        customer = self.get_customer(input("customer's username: "))
-        all_receipts = self.list_all_receipts()
-        return list(filter(lambda r: r["date"] == date and r["customer"] == customer["username"], all_receipts))
 
     def block_customer(self):
         username = input("Enter the customer's username: ")
@@ -177,7 +163,7 @@ class Manager:
     @staticmethod
     def validate_date(date_string):
         try:
-            datetime.strptime(date_string, '%Y/%m/%d')
+            datetime.strptime(date_string, '%Y/%b/%d')
             return date_string
         except Exception:
-            raise ValueError(f"{date_string} does not match format %Y/%m/%d")
+            raise ValueError(f"{date_string} does not match format %Y/%b/%d")

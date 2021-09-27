@@ -29,7 +29,6 @@ class FileHandler:
                 if file.tell() == 0:
                     writer.writeheader()
                 writer.writerows(new_value)
-    #
 
     def find_row(self, unique_param, checking_param):
         all_rows = self.read_file()
@@ -37,19 +36,14 @@ class FileHandler:
             if row[unique_param] == checking_param:
                 return row
 
-
-
-    # def edit_row(self, updated_dict):
-    #     all_rows = self.read_file()
-    #     final_rows = []
-    #     for row in all_rows:
-    #         information = ast.literal_eval(row["information"])
-    #         if information["address"]["postal_code"] == updated_dict["information"]["address"]["postal_code"]:
-    #             row = updated_dict
-    #         final_rows.append(row)
-    #     self.add_to_file(final_rows, mode="w")
-    #
-
+    def edit_row(self, unique_param, checking_param, updated_dict):
+        all_rows = self.read_file()
+        final_rows = []
+        for row in all_rows:
+            if row[unique_param] == checking_param:
+                row = updated_dict
+            final_rows.append(row)
+        self.add_to_file(final_rows, mode="w")
 
     # def read_file(self):
     #     list_objects = []

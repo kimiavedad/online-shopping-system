@@ -4,8 +4,8 @@ this project works with 3 files (users.csv, receipts.csv, malls.csv)
 ## format of each file
 #### users.csv:
 
-```diff
--role,+username,!password
+
+```diff -role,+username,!password ```
 
 -manager,+09995555358,!a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3
 

@@ -13,9 +13,19 @@ class Mall:
         # list of dictionaris (product.__dict__ added to this list)
         self.all_products = all_products
         self.blocked_customers = blocked_customers
+        self.update_file()
+
+    @classmethod
+    def get_mall(cls, manager_username):
+        """ create a mall object from file"""
+        mall = cls.file_handler.find_row("manager", manager_username)
+        mall["all_products"] = eval(mall["all_products"])
+        mall["blocked_customers"] = eval(mall["blocked_customers"])
+        return Mall(mall["manager"], mall["name"], mall["opening_time"], mall["closing_time"], mall["all_products"],
+                    mall["blocked_customers"])
 
     def get_finished_products(self):
-        return [product for product in self.all_products if product['available'] == 0]
+        return [product for product in self.all_products if product['available'] <= 3]
 
     def get_available_products(self):
         return [product for product in self.all_products if product['available'] != 0]
@@ -27,7 +37,7 @@ class Mall:
         product = self.get_product(barcode)
         if product:
             self.all_products = [product for product in self.all_products if product['barcode'] != barcode]
-            print("product removed successfully.")
+            print(f"Product with barcode {barcode} removed successfully.")
         else:
             raise ValueError(f"There isn't any product with barcode {barcode}.")
 
@@ -35,13 +45,19 @@ class Mall:
         self.all_products.append(product.__dict__)
 
     def update_file(self):
+        # todo: edit file if: mall_in_file exists and mall_in_file != mall
+        # if not exists add to file
         mall_in_file = self.file_handler.find_row("manager", self.manager)
+        # pairs = zip(self.__dict__, mall_in_file)
+        # any(x != y for x, y in pairs)
         if mall_in_file:
             self.file_handler.edit_row("manager", self.manager, self.__dict__)
-        else:
+        elif mall_in_file is None:
             self.file_handler.add_to_file(self.__dict__)
 
+
     def display_products(self, username, list_products=[]):
+        # todo: use pretty table for showing products
         if not list_products:
             list_products = self.all_products
         if username not in self.blocked_customers:

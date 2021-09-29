@@ -13,7 +13,6 @@ class Receipt:
     def __init__(self, mall_name, customer_number, date, hour, purchased_products):
         self.mall = mall_name
         self.customer = customer_number
-        # purchased_products is a list of tuples first position is product and second position is quantity
         self.purchased_products = purchased_products
         self.date = date
         self.hour = hour

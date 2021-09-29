@@ -155,6 +155,7 @@ class Manager(User):
             raise ValueError(f"This username ({username} already exists in block list.)")
         self.get_customer(username)  # if this customer not exists, get_customer() raise error
         self.mall.blocked_customers.append(username)
+        self.mall.update_file()
         print(f"Customer ({username}) is blocked now.")
         print(f"List of blocked customers: {self.mall.blocked_customers}")
 

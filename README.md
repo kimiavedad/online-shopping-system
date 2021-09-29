@@ -4,6 +4,14 @@ this project works with 3 files (users.csv, receipts.csv, malls.csv)
 ## format of each file
 #### users.csv:
 
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+
+
+
 | role        | username           | password  |
 | ----------  |:-------------:|: --------------------------------------------------------------:|
 | manager     | 0999\*\*\*5358  a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3 |

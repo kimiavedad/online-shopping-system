@@ -24,9 +24,9 @@ this project works with 3 files (users.csv, receipts.csv, malls.csv)
 
 |customer|all_receipts
 | ------- | ---
-|0999\*\*\*2121  |  "\[{'mall': 'Ofogh', 'customer': '0999\*\*\*2121', 'purchased_products': \[{'name': 'panir', 'price': 20, 'quantity': 1}, {'name': 'chips', 'price': 30, 'quantity': 1}], 'date': '1400/9/27', 'hour': '13:56', 'sum_prices': 50}]"
+|0999\*\*\*2121  |  "[{'mall': 'Ofogh', 'customer': '0999\*\*\*2121', 'purchased_products': [{'name': 'panir', 'price': 20, 'quantity': 1}, {'name': 'chips', 'price': 30, 'quantity': 1}], 'date': '1400/9/27', 'hour': '13:56', 'sum_prices': 50}]"
 
-|0935\*\*\*4101 |  "\[{'mall': 'refah', 'customer': '0935\*\*\*4101', 'purchased_products': \[{'name': 'khameh', 'price': 20, 'quantity': 1}], 'date': '1400/10/27', 'hour': '10:56', 'sum_prices': 20}, {'mall': 'refah', 'customer': '0935\*\*\*4101', 'purchased_products': \[{'name': 'pofak', 'price': 10, 'quantity': 1}], 'date': '1400/11/02', 'hour': '17:56', 'sum_prices': 10}]"
+|0935\*\*\*4101 |  "[{'mall': 'refah', 'customer': '0935\*\*\*4101', 'purchased_products': [{'name': 'khameh', 'price': 20, 'quantity': 1}], 'date': '1400/10/27', 'hour': '10:56', 'sum_prices': 20}, {'mall': 'refah', 'customer': '0935\*\*\*4101', 'purchased_products': [{'name': 'pofak', 'price': 10, 'quantity': 1}], 'date': '1400/11/02', 'hour': '17:56', 'sum_prices': 10}]"
 
 
 

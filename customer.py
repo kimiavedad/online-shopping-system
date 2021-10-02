@@ -1,24 +1,44 @@
 import hashlib
 from datetime import datetime, time, date
-
+from user import User
 from Kimia_Vedad_HW9_Maktab61.receipt import Receipt
 from file_handler import FileHandler
 from mall import Mall
+import logging
 
 
-class Customer:
-    file_handler_users = FileHandler("users.csv")
-    file_handler_products = FileHandler("malls.csv")
-    file_handler_receipts = FileHandler("receipt.csv")
+class Customer(User):
     role = "customer"
 
-    def __init__(self, username, password, all_receipts=[]):
+    def __init__(self, username, password):
         """create a new object when customer signs in or logs in"""
-        self.username = username
-        self.password = hashlib.sha256(password.encode()).hexdigest()
-        self.all_receipts = all_receipts
+        super().__init__(username, password)
+        self.all_receipts = []
         self.selected_products = []
-        self.customer_interface()
+
+    @classmethod
+    def sign_up(cls):
+        customer = super().sign_up()
+        logging.info("New customer registered.")
+        customer.file_handler_users.add_to_file(customer.to_dict())
+        return  customer
+
+    @classmethod
+    def log_in(cls):
+        customer = super().log_in()
+        customer.all_receipts = cls.get_receipts(customer.username)
+        return customer
+
+    @staticmethod
+    def get_receipts(customer_username):
+        """ read all receipt of a customer from file and convert it to list of dictionary using eval() """
+        all_receipts = Customer.file_handler_receipts.find_row("customer", customer_username)["all_receipts"]
+        if all_receipts:
+            all_receipts = eval(all_receipts)
+        else:
+            all_receipts = []
+        return all_receipts
+
 
     def to_dict_receipts(self):
         dict_to_write = {"customer": self.username, "all_receipts": self.all_receipts}
@@ -36,7 +56,7 @@ class Customer:
         print("4.Select a mall")
         print("5.Logout")
 
-    def customer_interface(self):
+    def interface(self):
         choices = {"1": self.print_all_receipts, "2": self.print_all_malls, "3": self.search_mall, "4":self.select_mall}
         while True:
             try:

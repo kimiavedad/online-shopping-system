@@ -1,27 +1,50 @@
-import hashlib
 from datetime import datetime
 import logging
 from file_handler import FileHandler
 from product import Product
 from receipt import Receipt
+from user import User
+from mall import Mall
 
 
-class Manager:
-    file_handler_users = FileHandler("users.csv")
-    file_handler_products = FileHandler("malls.csv")
-    file_handler_receipts = FileHandler("receipt.csv")
+class Manager(User):
     role = "manager"
 
-    def __init__(self, username, password, mall):
+    def __init__(self, username, password):
         """create a new object when manager signs in or logs in"""
-        self.username = username
-        self.password = hashlib.sha256(password.encode()).hexdigest()
-        self.mall = mall
-        self.print_warnings()
-        self.manager_interface()
+        super().__init__(username, password)
+        self.mall = None
 
-    def to_dict(self):
-        return {"role": self.role, "username": self.username, "password": self.password}
+    @classmethod
+    def sign_up(cls):
+        manager = super().sign_up()
+        mall_name = cls.check_empty("Mall name", input("Mall name: "))
+        opening_time = cls.validate_time(input("Opening time (%H:%M): "))
+        closing_time = cls.validate_time(input("Closing time (%H:%M): "))
+        mall = Mall(manager.username, mall_name, opening_time, closing_time)
+        manager.mall = mall
+        logging.info("New manager registered.")
+        logging.info("New mall added.")
+        manager.file_handler_users.add_to_file(manager.to_dict())
+        return manager
+
+    @classmethod
+    def log_in(cls):
+        manager = super().log_in()
+        manager.mall = Mall.get_mall(manager.username)
+        return manager
+
+    @staticmethod
+    def validate_time(input_time):
+        # TODO: check if closing!=00:00 then closing_time > opening_time
+        Manager.check_empty("Time", input_time)
+        # check if the input time is in required format otherwise raise an error.
+        try:
+            datetime.strptime(input_time, '%H:%M')
+        except Exception:
+            raise ValueError(f"{input_time} does not match format %H:%M")
+        else:
+            return input_time
 
     @staticmethod
     def display_manager_menu():
@@ -37,16 +60,14 @@ class Manager:
         print("6.Block a customer.")
         print("7.Logout")
 
-    def manager_interface(self):
-        choices = {"1": self.add_products, "2": self.remove_product, "3": self.available_products,
+    def interface(self):
+        choices = {"1": self.add_products, "2": self.remove_product, "3": self.list_available_products,
                    "4": self.print_all_receipts, "5": self.filter_receipts, "6": self.block_customer}
         while True:
             try:
                 self.display_manager_menu()
                 choice = input("Please enter your choice : ")
                 if choice == "7":
-                    # if mall exists in file the mall must removed and then add a new mall
-                    self.mall.update_file()
                     break
                 action = choices.get(choice)
                 if action:
@@ -60,7 +81,7 @@ class Manager:
     def add_products(self):
         n = input("Enter the number of products need to be added: ")
         if n is None or not n.isnumeric():
-            raise ValueError("number of products must be an integer.")
+            raise ValueError("Number of products must be an integer.")
         for i in range(int(n)):
             print("**** NEW PRODUCT ****")
             barcode = self.validate_barcode(input("Barcode: "))
@@ -73,27 +94,29 @@ class Manager:
             product = Product(barcode, price, brand, name, available, exp_date)
             self.mall.add_product(product)
             logging.info("New product added.")
+        self.mall.update_file()
         print("Products added successfully.")
 
     def remove_product(self):
-        barcode = int(input("Enter the barcode of product need to be remove: "))
+        barcode = input("Enter the barcode of product need to be remove: ")
         self.mall.remove_product(barcode)
+        self.mall.update_file()
 
-    def available_products(self):
+    def list_available_products(self):
         self.print_warnings()
         available_products = self.mall.get_available_products()
         if available_products:
             print("***** List of available products *****")
             self.mall.display_products(self.username, available_products)
         else:
-            print("No product is added yet.")
+            print("There is no product in the mall.")
 
     def print_warnings(self):
         finished_products = self.mall.get_finished_products()
         if finished_products:
             logging.warning("ran of put of some products.")
             print("******* ATTENTION ********")
-            print("We ran out of these products:")
+            print("We are going to ran out of these products:")
             self.mall.display_products(self.username, finished_products)
 
     @staticmethod
@@ -132,6 +155,7 @@ class Manager:
             raise ValueError(f"This username ({username} already exists in block list.)")
         self.get_customer(username)  # if this customer not exists, get_customer() raise error
         self.mall.blocked_customers.append(username)
+        self.mall.update_file()
         print(f"Customer ({username}) is blocked now.")
         print(f"List of blocked customers: {self.mall.blocked_customers}")
 

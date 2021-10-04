@@ -98,8 +98,8 @@ class Manager(User):
         print("Products added successfully.")
 
     def remove_product(self):
-        barcode = input("Enter the barcode of product need to be remove: ")
-        self.mall.remove_product(barcode)
+        product_name = input("Enter the name of product need to be remove: ")
+        self.mall.remove_product(product_name)
         self.mall.update_file()
 
     def list_available_products(self):
@@ -107,7 +107,7 @@ class Manager(User):
         available_products = self.mall.get_available_products()
         if available_products:
             print("***** List of available products *****")
-            self.mall.display_products(self.username, available_products)
+            self.mall.display_products_to_manager(available_products)
         else:
             print("There is no product in the mall.")
 
@@ -117,15 +117,18 @@ class Manager(User):
             logging.warning("ran of put of some products.")
             print("******* ATTENTION ********")
             print("We are going to ran out of these products:")
-            self.mall.display_products(self.username, finished_products)
+            self.mall.display_products_to_manager(finished_products)
 
     @staticmethod
     def display_receipts(list_receipts):
         """ print all the receipts in list_receipts """
-        for receipt in list_receipts:
-            receipt_obj = Receipt(receipt["mall"], receipt["customer"], receipt["date"], receipt["hour"],
-                                  receipt["purchased_products"])
-            receipt_obj.display()
+        if list_receipts:
+            for receipt in list_receipts:
+                receipt_obj = Receipt(receipt["mall"], receipt["customer"], receipt["date"], receipt["hour"],
+                                      receipt["purchased_products"])
+                receipt_obj.display()
+        else:
+            print("There isn't any receipts.")
 
     def list_all_receipts(self):
         """ return a list of receipts related to this mall """
@@ -153,7 +156,7 @@ class Manager(User):
         username = input("Enter the customer's username: ")
         if username in self.mall.blocked_customers:
             raise ValueError(f"This username ({username} already exists in block list.)")
-        self.get_customer(username)  # if this customer not exists, get_customer() raise error
+        self.get_customer(username)  # if this customer not exists, function get_customer() raise error
         self.mall.blocked_customers.append(username)
         self.mall.update_file()
         print(f"Customer ({username}) is blocked now.")
@@ -169,7 +172,7 @@ class Manager(User):
     def validate_barcode(self, barcode):
         if not barcode.isnumeric():
             raise ValueError("A barcode must be an integer.")
-        if self.mall.get_product(barcode):
+        if self.mall.find_product_in_list(barcode):
             raise ValueError("Barcode must be unique.")
         return barcode
 

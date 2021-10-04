@@ -1,3 +1,4 @@
 manager,name,opening_time,closing_time,all_products,blocked_customers
-09995555358,refah,7:00,22:00,"[{'barcode': '1', 'price': 15.0, 'brand': 'pegah', 'name': 'shir', 'available': 13, 'expiration_date': '1400/7/15'}]",[]
-09991112121,jambo,8:00,23:00,"[{'barcode': '1', 'price': 14.0, 'brand': 'kaleh', 'name': 'panir', 'available': 3, 'expiration_date': '1400/6/2'}]",[]
+09995555358,refah,7:00,22:00,"[{'barcode': '1', 'price': 15.0, 'brand': 'pegah', 'name': 'shir', 'available': 11, 'expiration_date': '1400/7/15'}, {'barcode': '2', 'price': 15.0, 'brand': 'mihan', 'name': 'doogh', 'available': '3', 'expiration_date': '1400/07/15'}, {'barcode': '3', 'price': 30.0, 'brand': 'setak', 'name': 'biscuits', 'available': 0, 'expiration_date': '1401/7/16'}]",['09191111919']
+09991112121,jambo,8:00,23:00,"[{'barcode': '1', 'price': 14.0, 'brand': 'kaleh', 'name': 'panir', 'available': 0, 'expiration_date': '1400/6/2'}]",[]
+09776667788,shahrvand,7:00,22:00,[],[]

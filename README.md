@@ -35,6 +35,12 @@ customer,all_receipts
 ```
 
 
+## username and password for testing:
+```
+customer: 09188881818, 1234
+customer: 09191111919, 12345
+manager: 09995555358, 123
+```
 
 
 

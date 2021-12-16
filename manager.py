@@ -98,13 +98,8 @@ class Manager(User):
         print("Products added successfully.")
 
     def remove_product(self):
-<<<<<<< HEAD
-        barcode = input("Enter the barcode of product need to be remove: ")
-        self.mall.remove_product(barcode)
-=======
         product_name = input("Enter the name of product need to be remove: ")
         self.mall.remove_product(product_name)
->>>>>>> phase2
         self.mall.update_file()
 
     def list_available_products(self):
@@ -122,11 +117,7 @@ class Manager(User):
             logging.warning("ran of put of some products.")
             print("******* ATTENTION ********")
             print("We are going to ran out of these products:")
-<<<<<<< HEAD
-            self.mall.display_products(self.username, finished_products)
-=======
             self.mall.display_products_to_manager(finished_products)
->>>>>>> phase2
 
     @staticmethod
     def display_receipts(list_receipts):

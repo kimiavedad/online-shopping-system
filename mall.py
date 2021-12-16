@@ -27,11 +27,7 @@ class Mall:
                     mall["blocked_customers"])
 
     def get_finished_products(self):
-<<<<<<< HEAD
-        return [product for product in self.all_products if product['available'] <= 3]
-=======
         return [product for product in self.all_products if int(product['available']) <= 3]
->>>>>>> phase2
 
     def get_available_products(self):
         return [product for product in self.all_products if int(product['available']) > 0]
@@ -42,13 +38,8 @@ class Mall:
     def remove_product(self, name):
         product = self.get_product(name)
         if product:
-<<<<<<< HEAD
-            self.all_products = [product for product in self.all_products if product['barcode'] != barcode]
-            print(f"Product with barcode {barcode} removed successfully.")
-=======
             self.all_products = [product for product in self.all_products if product['name'] != name]
             print(f"Product {name} removed successfully.")
->>>>>>> phase2
         else:
             raise ValueError(f"There isn't any product {name}.")
 
@@ -66,22 +57,6 @@ class Mall:
         elif mall_in_file is None:
             self.file_handler.add_to_file(self.__dict__)
 
-<<<<<<< HEAD
-
-    def display_products(self, username, list_products=[]):
-        # todo: use pretty table for showing products
-        if not list_products:
-            list_products = self.all_products
-        if username not in self.blocked_customers:
-            print("\n{:<10}{:<8}{:<8}{:<13}{}".format("Barcode", "Name", "Brand", "Available", "Price"))
-            print("______________________________________________")
-            for product in list_products:
-                print("{:<10}{:<8}{:<8}{:<13}{}".format(product["barcode"], product["name"], product["brand"],
-                                                        product["available"], product["price"]))
-            print()
-        else:
-            print()
-=======
     def display_products_to_manager(self, list_products):
         # todo: use pretty table for showing products
         print("\n{:<10}{:<11}{:<8}{:<13}{}".format("Barcode", "Name", "Brand", "Available", "Price"))
@@ -90,7 +65,6 @@ class Mall:
             print("{:<10}{:<11}{:<8}{:<13}{}".format(product["barcode"], product["name"], product["brand"],
                                                      product["available"], product["price"]))
         print()
->>>>>>> phase2
 
     def display_products_to_customer(self, customer_username):
         # todo: use pretty table for showing products
@@ -126,7 +100,6 @@ class Mall:
                     if p_mall["available"] == 0:
                         logging.warning(f"{p_mall['name']} is no longer available in the mall.")
                         self.remove_product(p_mall["name"])
-
 
     def __str__(self):
         return f"{self.name.title()} Shopping Mall - Opening hours: {self.opening_time} am - {self.closing_time} pm"

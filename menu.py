@@ -24,10 +24,6 @@ class Menu:
                     user = action()
                     if isinstance(user, Manager):
                         user.print_warnings()
-<<<<<<< HEAD
-                    print(type(user))
-=======
->>>>>>> phase2
                     user.interface()
                 except ValueError as e:
                     logging.error(e)

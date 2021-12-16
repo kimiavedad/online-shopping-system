@@ -1,11 +1,7 @@
 import hashlib
 from datetime import datetime, time, date
 from user import User
-<<<<<<< HEAD
-from Kimia_Vedad_HW9_Maktab61.receipt import Receipt
-=======
 from receipt import Receipt, ShoppingBag
->>>>>>> phase2
 from file_handler import FileHandler
 from mall import Mall
 import logging
@@ -18,49 +14,20 @@ class Customer(User):
         """create a new object when customer signs in or logs in"""
         super().__init__(username, password)
         self.all_receipts = []
-<<<<<<< HEAD
-        self.selected_products = []
-        self.interface()
-=======
         self.list_shopping_bag = []
->>>>>>> phase2
 
     @classmethod
     def sign_up(cls):
         customer = super().sign_up()
         logging.info("New customer registered.")
         customer.file_handler_users.add_to_file(customer.to_dict())
-<<<<<<< HEAD
-        return  customer
-=======
         return customer
->>>>>>> phase2
 
     @classmethod
     def log_in(cls):
         customer = super().log_in()
-<<<<<<< HEAD
-        customer.all_receipts = cls.get_receipts(customer.username)
-        return customer
-
-    @staticmethod
-    def get_receipts(customer_username):
-        """ read all receipt of a customer from file and convert it to list of dictionary using eval() """
-        all_receipts = Customer.file_handler_receipts.find_row("customer", customer_username)["all_receipts"]
-        if all_receipts:
-            all_receipts = eval(all_receipts)
-        else:
-            all_receipts = []
-        return all_receipts
-
-
-    def to_dict_receipts(self):
-        dict_to_write = {"customer": self.username, "all_receipts": self.all_receipts}
-        return dict_to_write
-=======
         customer.all_receipts = cls.get_receipts_from_file(customer.username)
         return customer
->>>>>>> phase2
 
     @staticmethod
     def get_receipts_from_file(customer_username):
@@ -76,26 +43,11 @@ class Customer(User):
     def customer_menu():
         print("******* CUSTOMER MENU ******")
         print("1.List of all previous receipts")
-<<<<<<< HEAD
-        print("2.List of all shopping malls")
-        print("3.Search for a mall")
-        print("4.Select a mall")
-        print("5.Logout")
-
-    def interface(self):
-        choices = {"1": self.print_all_receipts, "2": self.print_all_malls, "3": self.search_mall, "4":self.select_mall}
-=======
         print("2.Start shopping")
-        # print("3.Search for a mall")
-        # print("4.Choose a mall")
-        # print("5.Search for a product")
-        # print("6.Add ")
-        # print("7.Shopping bag")
         print("3.Logout")
 
     def interface(self):
         choices = {"1": self.print_all_receipts, "2": self.start_shopping}
->>>>>>> phase2
         while True:
             try:
                 self.customer_menu()

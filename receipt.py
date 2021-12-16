@@ -33,10 +33,6 @@ class Receipt(ShoppingBag):
     def __init__(self, mall_name, customer_number, date, hour, purchased_products):
         super().__init__(mall_name, purchased_products)
         self.customer = customer_number
-<<<<<<< HEAD
-        self.purchased_products = purchased_products
-=======
->>>>>>> phase2
         self.date = date
         self.hour = hour
 

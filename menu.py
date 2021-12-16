@@ -15,7 +15,7 @@ class Menu:
         """Display the menu and respond to choices."""
         while True:
             Menu.display_menu()
-            choice = input("Choose a number from 1-3: ")
+            choice = input("Choose a number from 1-5: ")
             action = self.choices.get(choice)
             if choice == "5":
                 sys.exit(0)
@@ -24,7 +24,10 @@ class Menu:
                     user = action()
                     if isinstance(user, Manager):
                         user.print_warnings()
+<<<<<<< HEAD
                     print(type(user))
+=======
+>>>>>>> phase2
                     user.interface()
                 except ValueError as e:
                     logging.error(e)

@@ -1,5 +1,7 @@
+import logging
+
 from file_handler import FileHandler
-from datetime import datetime
+from datetime import datetime, time
 
 
 class Mall:
@@ -25,21 +27,30 @@ class Mall:
                     mall["blocked_customers"])
 
     def get_finished_products(self):
+<<<<<<< HEAD
         return [product for product in self.all_products if product['available'] <= 3]
+=======
+        return [product for product in self.all_products if int(product['available']) <= 3]
+>>>>>>> phase2
 
     def get_available_products(self):
-        return [product for product in self.all_products if product['available'] != 0]
+        return [product for product in self.all_products if int(product['available']) > 0]
 
     def get_product(self, barcode):
         return next((product for product in self.all_products if product["barcode"] == barcode), None)
 
-    def remove_product(self, barcode):
-        product = self.get_product(barcode)
+    def remove_product(self, name):
+        product = self.get_product(name)
         if product:
+<<<<<<< HEAD
             self.all_products = [product for product in self.all_products if product['barcode'] != barcode]
             print(f"Product with barcode {barcode} removed successfully.")
+=======
+            self.all_products = [product for product in self.all_products if product['name'] != name]
+            print(f"Product {name} removed successfully.")
+>>>>>>> phase2
         else:
-            raise ValueError(f"There isn't any product with barcode {barcode}.")
+            raise ValueError(f"There isn't any product {name}.")
 
     def add_product(self, product):
         self.all_products.append(product.__dict__)
@@ -55,6 +66,7 @@ class Mall:
         elif mall_in_file is None:
             self.file_handler.add_to_file(self.__dict__)
 
+<<<<<<< HEAD
 
     def display_products(self, username, list_products=[]):
         # todo: use pretty table for showing products
@@ -69,20 +81,52 @@ class Mall:
             print()
         else:
             print()
+=======
+    def display_products_to_manager(self, list_products):
+        # todo: use pretty table for showing products
+        print("\n{:<10}{:<11}{:<8}{:<13}{}".format("Barcode", "Name", "Brand", "Available", "Price"))
+        print("______________________________________________")
+        for product in list_products:
+            print("{:<10}{:<11}{:<8}{:<13}{}".format(product["barcode"], product["name"], product["brand"],
+                                                     product["available"], product["price"]))
+        print()
+>>>>>>> phase2
 
-    def enter_to_mall(self, visiting_time):
-        if self.is_open(visiting_time):
-            print(f"Welcome to the {self.name} shopping mall.")
-            self.display_products(self.all_products)
+    def display_products_to_customer(self, customer_username):
+        # todo: use pretty table for showing products
+        list_products = self.get_available_products()
+        if customer_username not in self.blocked_customers:
+            if list_products:
+                print("*********List of available products*********")
+                print("\n{:<13}{:<13}{}".format("Name", "Brand", "Price"))
+                print("______________________________________________")
+                for product in list_products:
+                    print("{:<13}{:<13}{}".format(product["name"], product["brand"], product["price"]))
+                print("********************************************")
+            else:
+                raise ValueError("There is no available product in this mall.")
         else:
-            print("Sorry... We're closed. Come again later.")
+            raise ValueError("Oops! You can't buy from this shop.")
 
     def is_open(self, visiting_time):
-        opening_time_obj = datetime.strptime(self.opening_time, '%H:%M')
-        closing_time_obj = datetime.strptime(self.closing_time, '%H:%M')
+        opening_time_obj = datetime.strptime(self.opening_time, '%H:%M').time()
+        closing_time_obj = datetime.strptime(self.closing_time, '%H:%M').time()
         if opening_time_obj < visiting_time < closing_time_obj:
             return True
         return False
+
+    def buy(self, list_product):
+        """change available amount for purchased product"""
+        for p_mall in self.all_products:
+            for p in list_product:
+                if p_mall["name"] == p["name"]:
+                    available = int(p_mall["available"])
+                    available -= int(p["quantity"])
+                    p_mall["available"] = available
+                    if p_mall["available"] == 0:
+                        logging.warning(f"{p_mall['name']} is no longer available in the mall.")
+                        self.remove_product(p_mall["name"])
+
 
     def __str__(self):
         return f"{self.name.title()} Shopping Mall - Opening hours: {self.opening_time} am - {self.closing_time} pm"

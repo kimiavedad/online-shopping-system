@@ -172,7 +172,7 @@ class Manager(User):
     def validate_barcode(self, barcode):
         if not barcode.isnumeric():
             raise ValueError("A barcode must be an integer.")
-        if self.mall.find_product_in_list(barcode):
+        if self.mall.get_product(barcode):
             raise ValueError("Barcode must be unique.")
         return barcode
 
